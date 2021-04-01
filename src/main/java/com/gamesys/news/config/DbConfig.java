@@ -1,5 +1,6 @@
 package com.gamesys.news.config;
 
+import com.gamesys.news.config.dtl.ConfigDtl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +21,7 @@ import javax.sql.DataSource;
 public class DbConfig {
     private static final Logger LOGGER = LoggerFactory.getLogger(DbConfig.class);
     @Autowired
-    DataSourceConfig dataSourceDtl;
+    ConfigDtl.DataSourceConfig dataSourceDtl;
 
     /**
      * @apiNote Bean for initialising data Source

@@ -1,6 +1,6 @@
-package com.gamesys.news.config.schedulers;
+package com.gamesys.news.schedulers;
 
-import com.gamesys.news.config.FeedConfig;
+import com.gamesys.news.config.dtl.ConfigDtl;
 import com.gamesys.news.dao.NewsDao;
 import com.gamesys.news.domain.News;
 import com.rometools.rome.feed.synd.SyndEntry;
@@ -11,9 +11,8 @@ import com.rometools.rome.io.XmlReader;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.net.URL;
@@ -25,13 +24,12 @@ import java.util.stream.Collectors;
  * @author Raminda
  * @apiNote  for getting feed information
  */
-@Configuration
-@EnableScheduling
+@Component
 public class NewsSchedule {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(NewsSchedule.class);
     @Autowired
-    FeedConfig feedDtl;
+    ConfigDtl.FeedConfig feedDtl;
 
     @Autowired
     NewsDao newsDao;

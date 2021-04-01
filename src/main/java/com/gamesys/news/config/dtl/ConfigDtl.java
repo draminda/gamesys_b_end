@@ -1,18 +1,20 @@
-package com.gamesys.news.config;
+package com.gamesys.news.config.dtl;
 
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.context.annotation.Configuration;
+import org.springframework.stereotype.Component;
 
-/**
- * @author Raminda
- * @apiNote  for getting db related information
- */
-@Configuration
-@ConfigurationProperties
-public class DataSourceConfig {
+
+public class ConfigDtl {
+    /**
+     * @author Raminda
+     * @apiNote  for getting db related information
+     */
+    @Component
+    @ConfigurationProperties
+    public static class DataSourceConfig {
         @Getter
         @Setter
         @Value("${datasource.url}")
@@ -46,4 +48,27 @@ public class DataSourceConfig {
             return sb.toString();
         }
 
+    }
+
+    /**
+     * @author Raminda
+     * @apiNote  for getting feed related information
+     */
+    @Component
+    @ConfigurationProperties
+    public static  class FeedConfig {
+        @Getter
+        @Setter
+        @Value("${feed.feedSource}")
+        private String feedSource;
+
+
+        @Override
+        public String toString() {
+            final StringBuilder sb = new StringBuilder("FeedDtl{");
+            sb.append("feedSource='").append(feedSource).append('\'');
+            sb.append('}');
+            return sb.toString();
+        }
+    }
 }
