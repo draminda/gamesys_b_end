@@ -8,12 +8,20 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+/**
+ * @author Raminda
+ * @apiNote Main REST api
+ */
 @RestController
 @RequestMapping("/api")
 @Component
 public class NewsController {
     private static final Logger LOGGER = LoggerFactory.getLogger(NewsController.class);
 
+    /**
+     * @apiNote Get News
+     * @param pageSize
+     */
     @GetMapping("/news")
     public void getNews(final @RequestParam(name = "size",required = false, defaultValue = "10")Integer pageSize) {
         LOGGER.debug("NewsController.getNews start");
