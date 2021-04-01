@@ -11,7 +11,7 @@ import java.util.Objects;
  */
 public class News extends AuditField {
 
-    private Long Id;
+    private Long id;
     private String title;
     private String link;
     private String description;
@@ -24,11 +24,11 @@ public class News extends AuditField {
     private String docs;
 
     public Long getId() {
-        return Id;
+        return id;
     }
 
     public void setId(Long id) {
-        Id = id;
+        this.id = id;
     }
 
     public String getTitle() {
@@ -115,7 +115,7 @@ public class News extends AuditField {
     @Override
     public String toString() {
         final StringBuilder sb = new StringBuilder("News{");
-        sb.append("Id=").append(Id);
+        sb.append("id=").append(id);
         sb.append(", title='").append(title).append('\'');
         sb.append(", link='").append(link).append('\'');
         sb.append(", description='").append(description).append('\'');
@@ -166,9 +166,9 @@ public class News extends AuditField {
 
     /**
      * @apiNote get values as object array
-     * @return
+     * @return List<Object>
      */
-    public List getAsArray(){
+    public List<Object> getAsArray(){
         return Arrays.asList(title,link,description,language,copyright,pubDate,author, icon,image,docs,getCreatedAt());
     }
 }

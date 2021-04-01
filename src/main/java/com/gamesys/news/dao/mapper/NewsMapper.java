@@ -14,10 +14,10 @@ public class NewsMapper implements RowMapper<News> {
 
     /**
      *
-     * @param rs
-     * @param rowNum
+     * @param rs ResultSet
+     * @param rowNum row number
      * @return News
-     * @throws SQLException
+     * @throws SQLException if data set not rendered
      */
     @Override
     public News mapRow(ResultSet rs, int rowNum) throws SQLException {
@@ -30,11 +30,11 @@ public class NewsMapper implements RowMapper<News> {
                 rs.getTimestamp("news_pub_date").toInstant():null);
         news.setLink(rs.getString("news_link"));
         news.setTitle(rs.getString("news_title"));
-        news.setCopyright(rs.getString("news_author"));
-        news.setDescription(rs.getString("news_icon"));
-        news.setLanguage(rs.getString("news_image"));
-        news.setLanguage(rs.getString("news_docs"));
-        news.setPubDate(rs.getTimestamp("news_created_at")!=null?
+        news.setAuthor(rs.getString("news_author"));
+        news.setIcon(rs.getString("news_icon"));
+        news.setImage(rs.getString("news_image"));
+        news.setDocs(rs.getString("news_docs"));
+        news.setCreatedAt(rs.getTimestamp("news_created_at")!=null?
                 rs.getTimestamp("news_created_at").toInstant():null);
         return news;
     }

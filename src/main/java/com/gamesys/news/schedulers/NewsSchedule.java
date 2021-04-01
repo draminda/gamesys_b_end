@@ -1,8 +1,8 @@
 package com.gamesys.news.schedulers;
 
 import com.gamesys.news.config.dtl.ConfigDtl;
-import com.gamesys.news.dao.NewsDao;
 import com.gamesys.news.domain.News;
+import com.gamesys.news.service.NewsService;
 import com.rometools.rome.feed.synd.SyndEntry;
 import com.rometools.rome.feed.synd.SyndFeed;
 import com.rometools.rome.io.FeedException;
@@ -32,7 +32,7 @@ public class NewsSchedule {
     ConfigDtl.FeedConfig feedDtl;
 
     @Autowired
-    NewsDao newsDao;
+    NewsService newsService;
 
     /**
      * @apiNote Scheduler using fixedDelay cron
@@ -56,10 +56,10 @@ public class NewsSchedule {
         SyndFeedInput input = new SyndFeedInput();
         SyndFeed feed = input.build(new XmlReader(feedSource));
         List<News> newsList = feed.getEntries().stream().map(this::syndEntryToNews).collect(Collectors.toList());
-        List<News> oldRss= newsDao.findAll();
+        List<News> oldRss= newsService.getAllNews();
         LOGGER.debug("newsList.size {}", newsList.size());
         if(!newsList.isEmpty()) {
-            newsDao.saveAll(oldRss.isEmpty()?
+            newsService.saveAll(oldRss.isEmpty()?
                     newsList:
                     newsList.stream().filter(news -> !newsList.contains(news)).collect(Collectors.toList()));
         }
@@ -68,11 +68,11 @@ public class NewsSchedule {
 
     /**
      * @apiNote conver to News
-     * @param syndEntry
-     * @return
+     * @param syndEntry  SyndEntry
+     * @return News
      */
     private News syndEntryToNews(SyndEntry syndEntry){
-        News news = new News();;
+        News news = new News();
         if(syndEntry.getSource()!=null) {
             news.setTitle(syndEntry.getSource().getTitle());
             news.setLink(syndEntry.getSource().getLink());

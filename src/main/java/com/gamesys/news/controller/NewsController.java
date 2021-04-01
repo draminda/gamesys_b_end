@@ -5,7 +5,6 @@ import com.gamesys.news.service.NewsService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -30,11 +29,11 @@ public class NewsController {
 
     /**
      * @apiNote Get News
-     * @param pageSize
+     * @param pageSize size of the list
      */
     @GetMapping("/news")
     public ResponseEntity<List<News>> getNews(final @RequestParam(name = "size",required = false)Integer pageSize) {
         LOGGER.debug("NewsController.getNews start size : {}",pageSize);
-        return new ResponseEntity(newsService.getAllNews(pageSize), HttpStatus.OK) ;
+        return  ResponseEntity.ok().body(newsService.getAllNews(pageSize)) ;
     }
 }

@@ -8,6 +8,10 @@ import org.springframework.stereotype.Component;
 
 
 public class ConfigDtl {
+
+    private ConfigDtl() {
+    }
+
     /**
      * @author Raminda
      * @apiNote  for getting db related information
@@ -25,8 +29,8 @@ public class ConfigDtl {
         private String driverClassName;
         @Getter
         @Setter
-        @Value("${datasource.username}")
-        private String username;
+        @Value("${datasource.user_name}")
+        private String userName;
         @Getter
         @Setter
         @Value("${datasource.password}")
@@ -41,7 +45,7 @@ public class ConfigDtl {
             final StringBuilder sb = new StringBuilder("DataSourceDtl{");
             sb.append("url='").append(url).append('\'');
             sb.append(", driverClassName='").append(driverClassName).append('\'');
-            sb.append(", username='").append(username).append('\'');
+            sb.append(", userName='").append(userName).append('\'');
             sb.append(", password='").append(password).append('\'');
             sb.append(", platform='").append(platform).append('\'');
             sb.append('}');

@@ -38,12 +38,32 @@ public class NewsServiceImpl implements NewsService {
 
     /**
      * @apiNote get limited set by define size dft value is 10
-     * @param size
+     * @param size number of records needed
      * @return List<News>
      */
     @Override
     public List<News> getAllNews(Integer size) {
         LOGGER.debug("NewsServiceImpl.getAllNews size{} : start",size);
         return newsDao.findAll(size!=null?size:feedConfig.getRetrievalSize());
+    }
+
+    /**
+     * @apiNote save single news
+     * @param news object for save
+     * @return int
+     */
+    @Override
+    public int save(News news) {
+        return this.newsDao.save(news);
+    }
+
+    /**
+     * @apiNote save  news list
+     * @param news objects for save
+     * @return int[]
+     */
+    @Override
+    public int[] saveAll(List<News> news) {
+        return this.newsDao.saveAll(news);
     }
 }

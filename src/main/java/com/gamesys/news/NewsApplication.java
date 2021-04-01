@@ -11,10 +11,10 @@ import org.springframework.context.ConfigurableApplicationContext;
 @SpringBootApplication(scanBasePackages = "com.gamesys.news")
 @EntityScan("com.gamesys.news.domain")
 public class NewsApplication  extends SpringBootServletInitializer {
-	private static final Logger LOGGER = LoggerFactory.getLogger(NewsApplication.class);
+	private static final Logger lOG = LoggerFactory.getLogger(NewsApplication.class);
 	public static void main(String[] args) {
 		ConfigurableApplicationContext context = SpringApplication.run(NewsApplication.class, args);
-		LOGGER.info("NewsApplication is started {}",context.getEnvironment().toString());
+		lOG.info("NewsApplication is started {}",context.getEnvironment());
 	}
 
 }

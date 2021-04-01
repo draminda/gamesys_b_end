@@ -30,73 +30,99 @@ public class NewsDaoImpl implements NewsDao {
     @Autowired
     private JdbcTemplate jdbcTemplate;
 
-    static final String INSERT_SQL = "INSERT INTO news  " +
-            "(news_title,news_link,news_description," +
+    static final String COLUMNS = "news_title,news_link,news_description," +
             "news_language,news_copyright,news_pub_date,news_author," +
-            "news_icon,news_image,news_docs,news_created_at) VALUES (?,?,?,?,?,?,?,?,?,?,?) ";
-    static final String SELECT_SQL = "SELECT * FROM news";
-    static final String SELECT_TOP_SQL = "SELECT Top ? * FROM news ORDER BY news_pub_date DESC";
+            "news_icon,news_image,news_docs,news_created_at";
+    static final String INSERT_SQL = "INSERT INTO news  ("
+            + COLUMNS +") VALUES (?,?,?,?,?,?,?,?,?,?,?) ";
+    static final String SELECT_SQL = "SELECT id,"+COLUMNS+
+            " FROM news";
+    static final String DELETE_ALL_SQL = "DELETE  FROM news";
+    static final String DELETE_SQL = "DELETE  FROM news WHERE id=?";
+    static final String SELECT_TOP_SQL = "SELECT Top ? id ," + COLUMNS +
+            " FROM news ORDER BY news_pub_date DESC";
 
     /**
      * @apiNote return all
-     * @return
+     * @return List<News>
      */
     @Override
     public List<News> findAll() {
+        LOGGER.debug("NewsDaoImpl.findAll");
         return jdbcTemplate.queryForStream(
                 SELECT_SQL,new NewsMapper()).collect(Collectors.toList());
     }
 
     /**
      * @apiNote dft value for size is 10
-     * @param size
+     * @param size number of records
      * @return List<News>
      */
     @Override
     @Cacheable(cacheName = "find_all_news")
     public List<News> findAll(Integer size) {
+        LOGGER.debug("NewsDaoImpl.findAll size {}",size);
         return jdbcTemplate.queryForStream(
                 SELECT_TOP_SQL,getPreparedStatementSetter(Arrays.asList(size)),new NewsMapper()).collect(Collectors.toList());
     }
 
     /**
      *
-     * @param news
+     * @param news object for save
      * @return id
      */
     @Override
     @TriggersRemove(cacheName = "find_all_news", when = When.AFTER_METHOD_INVOCATION,removeAll = true)
     public int save(News news) {
+        LOGGER.debug("NewsDaoImpl.save {}",news);
         return jdbcTemplate.update(INSERT_SQL,
-                getPreparedStatementSetter(Arrays.asList(news
-                .getAsArray())));
+                getPreparedStatementSetter(news
+                .getAsArray()));
     }
 
     /**
      *
-     * @param news
+     * @param news objects for save
      * @return ids[]
      */
     @Override
     @TriggersRemove(cacheName = "find_all_news", when = When.AFTER_METHOD_INVOCATION,removeAll = true)
     public int[] saveAll(List<News> news) {
+        LOGGER.debug("NewsDaoImpl.saveAll {} ",news.size());
         return jdbcTemplate.batchUpdate(INSERT_SQL,getBatchPreparedStatementSetter(news));
     }
 
     /**
+     * @apiNote  delete All
+     */
+    @Override
+    @TriggersRemove(cacheName = "find_all_news", when = When.AFTER_METHOD_INVOCATION,removeAll = true)
+    public void deleteAll() {
+        LOGGER.debug("NewsDaoImpl.deleteAll");
+         jdbcTemplate.execute(DELETE_ALL_SQL);
+    }
+
+    /**
+     *  @apiNote  delete one by id
+     * @param id deleted id
+     */
+    @Override
+    @TriggersRemove(cacheName = "find_all_news", when = When.AFTER_METHOD_INVOCATION,removeAll = true)
+    public void delete(Long id) {
+        LOGGER.debug("NewsDaoImpl.delete id : {}",id);
+        jdbcTemplate.update(DELETE_SQL,getPreparedStatementSetter(Arrays.asList(id)));
+    }
+    /**
      * @apiNote create news
-     * @param params
-     * @return
+     * @param params sql injected parms
+     * @return PreparedStatementSetter
      */
     private PreparedStatementSetter getPreparedStatementSetter(final List<Object> params) {
-        return new PreparedStatementSetter() {
-            @Override
-            public void setValues(PreparedStatement preparedStatement) throws SQLException {
-                if(!params.isEmpty()) {
-                    Integer count = 1;
-                    for (Object o : params) {
-                        preparedStatement.setString(count++, o!=null?o.toString():null);
-                    }
+        return preparedStatement -> {
+            if(!params.isEmpty()) {
+                int count = 1;
+                for (Object o : params) {
+                    preparedStatement.setObject(count++, o);
                 }
             }
         };
@@ -104,7 +130,7 @@ public class NewsDaoImpl implements NewsDao {
 
     /**
      * @apiNote create news list
-     * @param newsList
+     * @param newsList News list for generated as params list
      * @return BatchPreparedStatementSetter
      */
     private BatchPreparedStatementSetter getBatchPreparedStatementSetter(final List<News> newsList) {
@@ -112,10 +138,10 @@ public class NewsDaoImpl implements NewsDao {
             @Override
             public void setValues(PreparedStatement ps, int i) throws SQLException {
                 if(!newsList.get(i).getAsArray().isEmpty()) {
-                    List params = newsList.get(i).getAsArray();
-                    Integer count = 1;
+                    List<Object> params = newsList.get(i).getAsArray();
+                    int count = 1;
                     for (Object o : params) {
-                        ps.setObject(count++,  o!=null?o.toString():null);
+                        ps.setObject(count++, o);
                     }
                 }
             }

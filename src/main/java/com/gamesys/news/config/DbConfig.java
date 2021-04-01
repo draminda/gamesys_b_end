@@ -25,7 +25,7 @@ public class DbConfig {
 
     /**
      * @apiNote Bean for initialising data Source
-     * @return
+     * @return DataSource
      */
     @Bean
     public DataSource db2DataSource() {
@@ -33,7 +33,7 @@ public class DbConfig {
         DriverManagerDataSource dataSource = new DriverManagerDataSource();
         dataSource.setDriverClassName(dataSourceDtl.getDriverClassName());
         dataSource.setUrl(dataSourceDtl.getUrl());
-        dataSource.setUsername(dataSourceDtl.getUsername());
+        dataSource.setUsername(dataSourceDtl.getUserName());
         dataSource.setPassword(dataSourceDtl.getPassword());
         LOGGER.debug("DbConfig.db2DataSource end");
         return dataSource;
@@ -41,7 +41,7 @@ public class DbConfig {
 
     /**
      * @apiNote Bean for initialising data table
-     * @return
+     * @return DataSourceInitializer
      */
     @Bean
     public DataSourceInitializer dataSourceInitializer() {
