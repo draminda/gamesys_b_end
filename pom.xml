@@ -63,24 +63,9 @@
 			<version>1.5.2</version>
 		</dependency>
 		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-tomcat</artifactId>
-			<scope>compile</scope>
-		</dependency>
-		<dependency>
 			<groupId>com.rometools</groupId>
 			<artifactId>rome</artifactId>
 			<version>1.15.0</version>
-		</dependency>
-		<dependency>
-			<groupId>javax.servlet</groupId>
-			<artifactId>servlet-api</artifactId>
-			<version>2.5</version>
-		</dependency>
-		<dependency>
-			<groupId>javax.servlet</groupId>
-			<artifactId>jstl</artifactId>
-			<version>1.2</version>
 		</dependency>
 		<dependency>
 			<groupId>com.googlecode.ehcache-spring-annotations</groupId>
@@ -143,12 +128,18 @@
 						<id>default</id>
 						<goals>
 							<goal>build</goal>
+							<goal>push</goal>
 						</goals>
 					</execution>
 				</executions>
 				<configuration>
-					<repository>docker.io/kkapelon/docker-maven-comparison</repository>
+					<repository>${project.artifactId}</repository>
 					<tag>${project.version}</tag>
+					<buildArgs>
+						<JAR_FILE>target/${project.build.finalName}.war</JAR_FILE>
+					</buildArgs>
+					<finalName>${project.build.finalName}</finalName>
+					<dockerfile>${project.basedir}/Dockerfile</dockerfile>
 				</configuration>
 			</plugin>
 		</plugins>

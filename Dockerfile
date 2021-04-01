@@ -1,10 +1,9 @@
 FROM maven:3.6-jdk-11
 
-WORKDIR /usr/src/app
 
-COPY . /usr/src/app
-RUN mvn package
+COPY ./target/news-0.0.1.war news-0.0.1.war
 
-ENV PORT 5000
+ENV PORT 80
 EXPOSE $PORT
-CMD [ "sh", "-c", "mvn -Dserver.port=${PORT} spring-boot:run" ]
+
+ENTRYPOINT ["java","-jar","-Dserver.port=${PORT}","/app.jar"]
