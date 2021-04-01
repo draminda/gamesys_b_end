@@ -62,6 +62,10 @@ public class ConfigDtl {
         @Value("${feed.feedSource}")
         private String feedSource;
 
+        @Getter
+        @Setter
+        @Value("${feed.retrievalSize}")
+        private Integer retrievalSize;
 
         @Override
         public String toString() {

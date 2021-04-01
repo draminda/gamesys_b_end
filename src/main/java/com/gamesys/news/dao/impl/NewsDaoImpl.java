@@ -55,7 +55,6 @@ public class NewsDaoImpl implements NewsDao {
     @Override
     @Cacheable(cacheName = "find_all_news")
     public List<News> findAll(Integer size) {
-        size= size!=null?size:10;
         return jdbcTemplate.queryForStream(
                 SELECT_TOP_SQL,getPreparedStatementSetter(Arrays.asList(size)),new NewsMapper()).collect(Collectors.toList());
     }
