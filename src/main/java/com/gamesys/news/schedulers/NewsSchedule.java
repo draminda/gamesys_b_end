@@ -34,17 +34,24 @@ public class NewsSchedule {
     @Autowired
     NewsDao newsDao;
 
-    final int fixedDelay = 60000;
-    final int  initialDelay = 1000;
+    /**
+     * @apiNote Scheduler using fixedDelay cron
+     * @throws IOException
+     * @throws FeedException
+     */
+    @Scheduled(cron = "${cron.expression}")
+    public void retrieveNewsByCronSchedule() throws IOException, FeedException{
+        LOGGER.debug("NewsSchedule.retrieveNewsByCronSchedule now {}", Instant.now());
+        schedule();
+    }
 
     /**
      * @apiNote Scheduler for feed information
      * @throws IOException
      * @throws FeedException
      */
-    @Scheduled(fixedDelay = fixedDelay, initialDelay = initialDelay)
-    public void retrieveNewsBySchedule() throws IOException, FeedException {
-        LOGGER.debug("NewsSchedule.retrieveNewsBySchedule now {}", Instant.now());
+    private void schedule() throws IOException, FeedException{
+        LOGGER.debug("NewsSchedule.schedule now {}", Instant.now());
         URL feedSource = new URL(feedDtl.getFeedSource());
         SyndFeedInput input = new SyndFeedInput();
         SyndFeed feed = input.build(new XmlReader(feedSource));
