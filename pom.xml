@@ -10,7 +10,7 @@
 	</parent>
 	<groupId>com.gamesys</groupId>
 	<artifactId>news</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>0.0.1</version>
 	<packaging>war</packaging>
 	<name>news</name>
 	<description>project for feeding news </description>
@@ -132,6 +132,23 @@
 						</exclude>
 					</excludes>
 					<jvmArguments>-Xdebug -Xrunjdwp:transport=dt_socket,server=y,suspend=n,address=5005</jvmArguments>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>com.spotify</groupId>
+				<artifactId>dockerfile-maven-plugin</artifactId>
+				<version>1.4.13</version>
+				<executions>
+					<execution>
+						<id>default</id>
+						<goals>
+							<goal>build</goal>
+						</goals>
+					</execution>
+				</executions>
+				<configuration>
+					<repository>docker.io/kkapelon/docker-maven-comparison</repository>
+					<tag>${project.version}</tag>
 				</configuration>
 			</plugin>
 		</plugins>
