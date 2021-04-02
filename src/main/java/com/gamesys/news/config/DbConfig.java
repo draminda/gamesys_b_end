@@ -20,15 +20,13 @@ import javax.sql.DataSource;
 @Configuration
 public class DbConfig {
     private static final Logger LOGGER = LoggerFactory.getLogger(DbConfig.class);
-    @Autowired
-    ConfigDtl.DataSourceConfig dataSourceDtl;
 
     /**
      * @apiNote Bean for initialising data Source
      * @return DataSource
      */
     @Bean
-    public DataSource db2DataSource() {
+    public DataSource db2DataSource(ConfigDtl.DataSourceConfig dataSourceDtl) {
         LOGGER.debug("DbConfig.db2DataSource start");
         DriverManagerDataSource dataSource = new DriverManagerDataSource();
         dataSource.setDriverClassName(dataSourceDtl.getDriverClassName());
@@ -44,13 +42,13 @@ public class DbConfig {
      * @return DataSourceInitializer
      */
     @Bean
-    public DataSourceInitializer dataSourceInitializer() {
+    public DataSourceInitializer dataSourceInitializer(ConfigDtl.DataSourceConfig dataSourceDtl) {
         LOGGER.debug("DbConfig.dataSourceInitializer start");
         ResourceDatabasePopulator resourceDatabasePopulator = new ResourceDatabasePopulator();
         resourceDatabasePopulator.addScript(new ClassPathResource("/news.sql"));
 
         DataSourceInitializer dataSourceInitializer = new DataSourceInitializer();
-        dataSourceInitializer.setDataSource(db2DataSource());
+        dataSourceInitializer.setDataSource(db2DataSource(dataSourceDtl));
 
         dataSourceInitializer.setDatabasePopulator(resourceDatabasePopulator);
         LOGGER.debug("DbConfig.dataSourceInitializer end");
