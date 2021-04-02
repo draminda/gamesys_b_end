@@ -11,9 +11,6 @@ import java.util.List;
 public interface NewsService {
     List<News> getAllNews();
     List<News> getAllNews(Integer size);
-
     int save(News news);
-
     int[] saveAll(List<News> news);
-
 }

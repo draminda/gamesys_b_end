@@ -40,14 +40,20 @@ cache:
 verify:openjdk:11.0.10-jdk:
   <<: *verify
 
-# To deploy packages from CI, create a ci_settings.xml file
-# For deploying packages to GitLab's Maven Repository: See https://docs.gitlab.com/ee/user/packages/maven_repository/index.html#create-maven-packages-with-gitlab-cicd for more details.
-# Please note: The GitLab Maven Repository is currently only available in GitLab Premium / Ultimate.
-# For `master` branch run `mvn deploy` automatically.
+build:openjdk:11.0.10-jdk:
+  stage: build
+  script:
+    - 'mvn $MAVEN_CLI_OPTS clean install'
+
+sonar:openjdk:11.0.10-jdk:
+  stage: test
+  script:
+    - 'mvn $MAVEN_CLI_OPTS clean verify sonar:sonar'
+
 deploy:openjdk:11.0.10-jdk:
   stage: deploy
   script:
-    - 'mvn $MAVEN_CLI_OPTS clean install'
+    - 'mvn $MAVEN_CLI_OPTS clean package docker:build'
   only:
     variables:
       - $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH

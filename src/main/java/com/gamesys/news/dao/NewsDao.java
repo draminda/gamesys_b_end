@@ -9,14 +9,9 @@ import java.util.List;
  */
 public interface NewsDao {
     List<News> findAll();
-
     List<News> findAll(Integer size);
-
     int save(News news);
-
     int[] saveAll(List<News> news);
-
     void deleteAll();
-
     void delete(Long id);
 }
