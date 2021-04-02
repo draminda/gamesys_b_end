@@ -1,5 +1,6 @@
 package com.gamesys.news.controller;
 
+import com.gamesys.news.dao.NewsDao;
 import com.gamesys.news.domain.News;
 import com.gamesys.news.service.NewsService;
 import org.junit.Assert;
@@ -23,6 +24,8 @@ public class NewsControllerTest {
     private static final Logger LOGGER = LoggerFactory.getLogger(NewsControllerTest.class);
         @Autowired
         NewsService newsService;
+        @Autowired
+        NewsDao newsDao;
         @Autowired
         NewsController newsController;
 
@@ -49,6 +52,7 @@ public class NewsControllerTest {
         @Test
         public void getAllNewsBySizeTest() {
             LOGGER.debug("NewsControllerTest.getAllNewsBySizeTest");
+            newsDao.deleteAll();
             newsService.saveAll(Arrays.asList(news1,news2));
             ResponseEntity<List<News>> newsList = newsController.getNews(10);
             Assert.assertEquals( HttpStatus.OK,newsList.getStatusCode());
