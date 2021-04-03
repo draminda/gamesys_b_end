@@ -18,8 +18,8 @@
 	<description>project for feeding news </description>
 	<properties>
 		<java.version>11</java.version>
-		<sonar.projectKey>draminda_gamesys</sonar.projectKey>
-		<sonar.organization>draminda</sonar.organization>
+		<sonar.projectKey>draminda_gamesys_gamesys_b_end</sonar.projectKey>
+		<sonar.organization>draminda-gamesys</sonar.organization>
 		<sonar.host.url>https://sonarcloud.io</sonar.host.url>
 		<sonar.java.coveragePlugin>jacoco</sonar.java.coveragePlugin>
 		<sonar.dynamicAnalysis>reuseReports</sonar.dynamicAnalysis>
